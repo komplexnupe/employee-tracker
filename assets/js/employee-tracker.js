@@ -87,18 +87,18 @@ function viewEmployees() {
     if (err) throw err;
     employeeArr = [];
     for (i = 0; i < res.length; i++) {
-      employeeArr.push(res[i].name);
+      employeeArr.push(res[i].first_name + res[i].last_name);
     }
     console.table(employeeArr);
   });
 }
 
 function viewRoles() {
-  connection.query("SELECT * FROM role", function (err, res) {
+  connection.query("SELECT * FROM role", function (err, role) {
     if (err) throw err;
     roleArr = [];
-    for (i = 0; i < res.length; i++) {
-      roleArr.push(res[i].name);
+    for (i = 0; i < role.length; i++) {
+      roleArr.push(role[i].title);
     }
     console.table(roleArr);
   });
@@ -120,10 +120,9 @@ function addEmployee() {
       type: "list",
       message: "What is the employee's role?",
       name: "empRole",
-      choices: [roleArr]
+      choices: roleArr[1]
     }
-  ])
-    .then(function () {
+  ]).then(function () {
       connection.query(
         "INSERT INTO employee (first_name, last_name, role_id) VALUES (?,?,?)",
         [
@@ -149,17 +148,16 @@ function addRole() {
     },
     {
       type: "input",
-      message: "What is the employee's last name?",
+      message: "What is role's salary?",
       name: "salary"
     },
     {
       type: "list",
-      message: "What is the employee's role?",
-      name: "empRole",
-      choices: [deptArr]
+      message: "What department does this role belong to?",
+      name: "department",
+      choices: deptArr[1]
     }
-  ])
-    .then(function () {
+  ]).then(function () {
       connection.query(
         "INSERT INTO role (title, salary, department_id) VALUES (?,?,?)",
         [
@@ -183,8 +181,7 @@ function addDept() {
       message: "What is the name of the department?",
       name: "name"
     }
-  ])
-    .then(function () {
+  ]).then(function () {
       connection.query(
         "INSERT INTO employee (name) VALUES (?)",
         [

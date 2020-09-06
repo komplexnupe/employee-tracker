@@ -28,21 +28,16 @@ SELECT * FROM department;
 SELECT * FROM role;
 SELECT * FROM employee; 
 
-
-INSERT INTO role(first_name, last_name, role_id) 
-VALUES ("Lewis","Lake", 1);
-INSERT INTO role(first_name, last_name, role_id) 
-VALUES ("Jane","Stevenson", 3);
-INSERT INTO role(first_name, last_name, role_id) 
-VALUES ("Andre","Carter", 2);
-INSERT INTO role(first_name, last_name, role_id) 
-VALUES ("Debbie","Cakes", 9);
-INSERT INTO role(first_name, last_name, role_id) 
-VALUES ("Jack","Wilson", 8);
-
-SELECT first_name, last_name, role_id
-FROM employee
-INNER JOIN role ON role_id = role.id;
+INSERT INTO department(name) 
+VALUES ("Sales");
+INSERT INTO department(name) 
+VALUES ("Marketing");
+INSERT INTO department(name) 
+VALUES ("Finance");
+INSERT INTO department(name) 
+VALUES ("Legal");
+INSERT INTO department(name) 
+VALUES ("Engineering");
 
 INSERT INTO role(title,salary, department_id) 
 VALUES ("Accountant", 115000, 3);
@@ -67,15 +62,20 @@ SELECT title, salary, department_id
 FROM role
 INNER JOIN department ON department_id = department.id;
 
-INSERT INTO department(name) 
-VALUES ("Sales");
-INSERT INTO department(name) 
-VALUES ("Marketing");
-INSERT INTO department(name) 
-VALUES ("Finance");
-INSERT INTO department(name) 
-VALUES ("Legal");
-INSERT INTO department(name) 
-VALUES ("Engineering");
+
+INSERT INTO employee(first_name, last_name, role_id) 
+VALUES ("Lewis","Lake", 1);
+INSERT INTO employee(first_name, last_name, role_id) 
+VALUES ("Jane","Stevenson", 3);
+INSERT INTO employee(first_name, last_name, role_id) 
+VALUES ("Andre","Carter", 2);
+INSERT INTO employee(first_name, last_name, role_id) 
+VALUES ("Debbie","Cakes", 9);
+INSERT INTO employee(first_name, last_name, role_id) 
+VALUES ("Jack","Wilson", 8);
+
+SELECT first_name, last_name, role_id
+FROM employee
+INNER JOIN role ON role_id = role.id;
 
 
