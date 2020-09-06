@@ -118,26 +118,27 @@ function addEmployee() {
     },
     {
       type: "list",
-    message: "What is the employee's role?",
-    name: "empRole",
-    choices: [roleArr]
+      message: "What is the employee's role?",
+      name: "empRole",
+      choices: [roleArr]
     }
   ])
-  .then
-  connection.query(
-    "INSERT INTO employee (first_name, last_name, role_id) VALUES (?,?,?)",
-    [
-      "first_name",
-      "last_name",
-      "role_id"
-  ],
-    function(err, res) {
-      if (err) throw err;
-      // Call updateEmployee AFTER the INSERT completes
-      // updateEmployee();
-    }
-  );
- }
+    .then(function () {
+      connection.query(
+        "INSERT INTO employee (first_name, last_name, role_id) VALUES (?,?,?)",
+        [
+          "first_name",
+          "last_name",
+          "role_id"
+        ],
+        function (err, res) {
+          if (err) throw err;
+          // Call updateEmployee AFTER the INSERT completes
+          // updateEmployee();
+        }
+      );
+    })
+}
 
 function addRole() {
   inquirer.prompt([
@@ -153,26 +154,27 @@ function addRole() {
     },
     {
       type: "list",
-    message: "What is the employee's role?",
-    name: "empRole",
-    choices: [deptArr]
+      message: "What is the employee's role?",
+      name: "empRole",
+      choices: [deptArr]
     }
   ])
-  .then
-  connection.query(
-    "INSERT INTO role (title, salary, department_id) VALUES (?,?,?)",
-    [
-      "title",
-      "salary",
-      "department_id"
-  ],
-    function(err, res) {
-      if (err) throw err;
-      // Call updateEmployee AFTER the INSERT completes
-      // updateEmployee();
-    }
-  );
- }
+    .then(function () {
+      connection.query(
+        "INSERT INTO role (title, salary, department_id) VALUES (?,?,?)",
+        [
+          "title",
+          "salary",
+          "department_id"
+        ],
+        function (err, res) {
+          if (err) throw err;
+          // Call updateEmployee AFTER the INSERT completes
+          // updateEmployee();
+        }
+      );
+    })
+}
 
 function addDept() {
   inquirer.prompt([
@@ -182,19 +184,20 @@ function addDept() {
       name: "name"
     }
   ])
-  .then
-  connection.query(
-    "INSERT INTO employee (name) VALUES (?)",
-    [
-      "name",
-     
-  ],
-    function(err, res) {
-      if (err) throw err;
-      // Call updateEmployee AFTER the INSERT completes
-      // updateEmployee();
-    }
-  );
- }
+    .then(function () {
+      connection.query(
+        "INSERT INTO employee (name) VALUES (?)",
+        [
+          "name",
 
-function updateEmployee() { }
+        ],
+        function (err, res) {
+          if (err) throw err;
+          // Call updateEmployee AFTER the INSERT completes
+          // updateEmployee();
+        }
+      );
+    })
+}
+
+// function updateEmployee() { }
