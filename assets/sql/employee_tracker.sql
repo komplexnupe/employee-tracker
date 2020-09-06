@@ -6,7 +6,7 @@ USE employee_trackerDB;
 
 CREATE TABLE department (
 id INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-name VARCHAR(30) NOT NULL
+DEPT VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE role (
@@ -28,15 +28,15 @@ SELECT * FROM department;
 SELECT * FROM role;
 SELECT * FROM employee; 
 
-INSERT INTO department(name) 
+INSERT INTO department(DEPT) 
 VALUES ("Sales");
-INSERT INTO department(name) 
+INSERT INTO department(DEPT) 
 VALUES ("Marketing");
-INSERT INTO department(name) 
+INSERT INTO department(DEPT) 
 VALUES ("Finance");
-INSERT INTO department(name) 
+INSERT INTO department(DEPT) 
 VALUES ("Legal");
-INSERT INTO department(name) 
+INSERT INTO department(DEPT) 
 VALUES ("Engineering");
 
 INSERT INTO role(title,salary, department_id) 

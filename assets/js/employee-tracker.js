@@ -74,21 +74,23 @@ function mainMenu() {
 
 
 function viewDeparments() {
-  connection.query("SELECT * FROM department", function (err, depts) {
+  connection.query("SELECT DEPT FROM department", function (err, depts) {
     if (err) throw err;
     console.table(depts);
+    mainMenu();
   });
 }
 
 function viewEmployees() {
-  connection.query("SELECT * FROM employee", function (err, employee) {
+  connection.query("SELECT first_name,last_name FROM employee", function (err, employee) {
     if (err) throw err;
     console.table(employee);
+    mainMenu();
   });
 }
 
 function viewRoles() {
-  connection.query("SELECT title FROM role", function (err, role) {
+  connection.query("SELECT title,salary FROM role", function (err, role) {
     if (err) throw err;
     console.table(role);
     mainMenu();
@@ -138,8 +140,6 @@ function addEmployee() {
           },
           function (err, res) {
             if (err) throw err;
-            // Call updateEmployee AFTER the INSERT completes
-            // updateEmployee();
             mainMenu();
           }
         )
@@ -149,6 +149,12 @@ function addEmployee() {
 }
 
 function addRole() {
+  connection.query("SELECT * FROM department", function (err, res) {
+    if (err) throw err;
+    let deptArr = [];
+    for (let i = 0; i < res.length; i++) {
+      deptArr.push(res[i].name)
+    }
   inquirer.prompt([
     {
       type: "input",
@@ -167,25 +173,35 @@ function addRole() {
       choices: deptArr
     }
   ]).then(function (answers) {
+    let deptID;
+      connection.query("SELECT * FROM role", function (err, res) {
+        if (err) throw err;
+        for (let i = 0; i < res.length; i++) {
+          if (res[i].title === answers.department) {
+            deptID = res[i].id
+          }
+
+        }
     connection.query(
-      "INSERT INTO role (title, salary, department_id) VALUES (?,?,?)",
+      "INSERT INTO role SET ?",
       {
         title: answers.title,
         salary: answers.salary,
-        department_id: answers.department
+        department_id: deptID
       },
       function (err, res) {
         if (err) throw err;
-        // Call updateEmployee AFTER the INSERT completes
-        // updateEmployee();
+        mainMenu();
       }
-    );
-  });
+      )
+    })
+});
+});
 }
 
 function addDept() {
-  connection.query("SELECT * FROM department", function (err, res) {
-    if (err) throw err;
+  // connection.query("SELECT * FROM department", function (err, res) {
+  //   if (err) throw err;
     inquirer.prompt([
       {
         type: "input",
@@ -194,19 +210,18 @@ function addDept() {
       }
     ]).then(function (answer) {
       connection.query(
-        "INSERT INTO department (name) VALUES (?)",
+        "INSERT INTO department SET ?",
         {
-          name: answer.name,
+          DEPT: answer.name,
 
         },
         function (err, res) {
           if (err) throw err;
-          // Call updateEmployee AFTER the INSERT completes
-          // updateEmployee();
+          mainMenu();
         }
       );
     });
-  });
+  // });
 }
 
 // function updateEmployee() { }
