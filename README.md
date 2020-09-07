@@ -17,7 +17,7 @@ npm install
     
 ## <a name="usage">Usage</a>
 
-node employee-tracker.js
+npm start
 
 ## <a name="license">License</a>
 
