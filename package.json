@@ -2,8 +2,9 @@
   "name": "employee-tracker",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "employee-tracker.js",
   "scripts": {
+    "start": "node employee-tracker.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
