@@ -60,9 +60,9 @@ function mainMenu() {
       case "View All Departments":
         viewDeparments()
         break;
-      case "Update An Employee Role":
-        updateEmployee()
-        break;
+      // case "Update An Employee Role":
+      //   updateEmployee()
+      //   break;
       case "Exit":
         connection.end()
         break;
@@ -155,25 +155,25 @@ function addRole() {
     for (let i = 0; i < res.length; i++) {
       deptArr.push(res[i].name)
     }
-  inquirer.prompt([
-    {
-      type: "input",
-      message: "What is the title of the role?",
-      name: "title"
-    },
-    {
-      type: "input",
-      message: "What is role's salary?",
-      name: "salary"
-    },
-    {
-      type: "list",
-      message: "What department does this role belong to?",
-      name: "department",
-      choices: deptArr
-    }
-  ]).then(function (answers) {
-    let deptID;
+    inquirer.prompt([
+      {
+        type: "input",
+        message: "What is the title of the role?",
+        name: "title"
+      },
+      {
+        type: "input",
+        message: "What is role's salary?",
+        name: "salary"
+      },
+      {
+        type: "list",
+        message: "What department does this role belong to?",
+        name: "department",
+        choices: deptArr
+      }
+    ]).then(function (answers) {
+      let deptID;
       connection.query("SELECT * FROM role", function (err, res) {
         if (err) throw err;
         for (let i = 0; i < res.length; i++) {
@@ -182,46 +182,74 @@ function addRole() {
           }
 
         }
+        connection.query(
+          "INSERT INTO role SET ?",
+          {
+            title: answers.title,
+            salary: answers.salary,
+            department_id: deptID
+          },
+          function (err, res) {
+            if (err) throw err;
+            mainMenu();
+          }
+        )
+      })
+    });
+  });
+}
+
+function addDept() {
+  inquirer.prompt([
+    {
+      type: "input",
+      message: "What is the name of the department?",
+      name: "name"
+    }
+  ]).then(function (answer) {
     connection.query(
-      "INSERT INTO role SET ?",
+      "INSERT INTO department SET ?",
       {
-        title: answers.title,
-        salary: answers.salary,
-        department_id: deptID
+        DEPT: answer.name,
+
       },
       function (err, res) {
         if (err) throw err;
         mainMenu();
       }
-      )
-    })
-});
-});
+    );
+  });
 }
 
-function addDept() {
-  // connection.query("SELECT * FROM department", function (err, res) {
-  //   if (err) throw err;
-    inquirer.prompt([
-      {
-        type: "input",
-        message: "What is the name of the department?",
-        name: "name"
-      }
-    ]).then(function (answer) {
-      connection.query(
-        "INSERT INTO department SET ?",
-        {
-          DEPT: answer.name,
-
-        },
-        function (err, res) {
-          if (err) throw err;
-          mainMenu();
-        }
-      );
-    });
-  // });
-}
-
-// function updateEmployee() { }
+// function updateEmployee() {
+//   connection.query("SELECT first_name,last_name FROM employee", function (err, employee) {
+//     if (err) throw err;
+//     console.table(employee);
+//     let empArr = [];
+//     for (let i = 0; i < res.length; i++) {
+//       empArr.push(res[i].title)
+//     }
+//   }).then(function (){
+//   inquirer.prompt([
+//     {
+//       type: "list",
+//       message: "Which employee would you like to update?",
+//       name: "employee",
+//       choices: empArr
+//     }
+//   ]);
+// }).then(function (answers) {
+//     connection.query(
+//       "UPDATE employee SET ? WHERE ?",
+//       [
+//         {
+//           quantity: 100,
+//           flavor: "Rocky Road"
+//         }
+//       ],
+//       function (err, res) {
+//         if (err) throw err;
+//         mainMenu();
+//       });
+//   });
+// }
