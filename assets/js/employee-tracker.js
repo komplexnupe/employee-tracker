@@ -36,7 +36,7 @@ function mainMenu() {
         "View All Employees",
         "View All Roles",
         "View All Departments",
-        "Update An Employee Role",
+        // "Update An Employee Role",
         "Exit"
       ]
     },
