@@ -74,7 +74,7 @@ function mainMenu() {
 
 
 function viewDeparments() {
-  connection.query("SELECT DEPT FROM department", function (err, depts) {
+  connection.query(`SELECT DEPT FROM department`, function (err, depts) {
     if (err) throw err;
     console.table(depts);
     mainMenu();
@@ -82,7 +82,10 @@ function viewDeparments() {
 }
 
 function viewEmployees() {
-  connection.query("SELECT first_name,last_name FROM employee", function (err, employee) {
+  connection.query(`
+  SELECT first_name,last_name, title, salary
+  FROM employee
+  LEFT JOIN role on role_id = role.id`, function (err, employee) {
     if (err) throw err;
     console.table(employee);
     mainMenu();
@@ -90,7 +93,10 @@ function viewEmployees() {
 }
 
 function viewRoles() {
-  connection.query("SELECT title,salary FROM role", function (err, role) {
+  connection.query(`
+  SELECT title,salary, DEPT 
+  FROM role
+  LEFT JOIN department ON department_id = department.id`, function (err, role) {
     if (err) throw err;
     console.table(role);
     mainMenu();
@@ -98,7 +104,7 @@ function viewRoles() {
 }
 
 function addEmployee() {
-  connection.query("SELECT * FROM role", function (err, res) {
+  connection.query(`SELECT * FROM role`, function (err, res) {
     if (err) throw err;
     let titleArr = [];
     for (let i = 0; i < res.length; i++) {
@@ -123,7 +129,7 @@ function addEmployee() {
       }
     ]).then(function (answers) {
       let roleID;
-      connection.query("SELECT * FROM role", function (err, res) {
+      connection.query(`SELECT * FROM role`, function (err, res) {
         if (err) throw err;
         for (let i = 0; i < res.length; i++) {
           if (res[i].title === answers.empRole) {
@@ -132,7 +138,7 @@ function addEmployee() {
 
         }
         connection.query(
-          "INSERT INTO employee SET ?",
+          `INSERT INTO employee SET ?`,
           {
             first_name: answers.first_name,
             last_name: answers.last_name,
@@ -149,7 +155,7 @@ function addEmployee() {
 }
 
 function addRole() {
-  connection.query("SELECT * FROM department", function (err, res) {
+  connection.query(`SELECT * FROM department`, function (err, res) {
     if (err) throw err;
     let deptArr = [];
     for (let i = 0; i < res.length; i++) {
@@ -174,7 +180,7 @@ function addRole() {
       }
     ]).then(function (answers) {
       let deptID;
-      connection.query("SELECT * FROM role", function (err, res) {
+      connection.query(`SELECT * FROM role`, function (err, res) {
         if (err) throw err;
         for (let i = 0; i < res.length; i++) {
           if (res[i].title === answers.department) {
@@ -183,7 +189,7 @@ function addRole() {
 
         }
         connection.query(
-          "INSERT INTO role SET ?",
+          `INSERT INTO role SET ?`,
           {
             title: answers.title,
             salary: answers.salary,
@@ -208,7 +214,7 @@ function addDept() {
     }
   ]).then(function (answer) {
     connection.query(
-      "INSERT INTO department SET ?",
+      `INSERT INTO department SET ?`,
       {
         DEPT: answer.name,
 
