@@ -60,9 +60,9 @@ function mainMenu() {
       case "View All Departments":
         viewDeparments()
         break;
-      // case "Update An Employee Role":
-      //   updateEmployee()
-      //   break;
+      case "Update An Employee Role":
+        updateEmployee()
+        break;
       case "Exit":
         connection.end()
         break;
@@ -74,7 +74,7 @@ function mainMenu() {
 
 
 function viewDeparments() {
-  connection.query(`SELECT DEPT FROM department`, function (err, depts) {
+  connection.query(`SELECT DEPT AS Department FROM department`, function (err, depts) {
     if (err) throw err;
     console.table(depts);
     mainMenu();
@@ -82,9 +82,8 @@ function viewDeparments() {
 }
 
 function viewEmployees() {
-  connection.query(`
-  SELECT first_name,last_name, title, salary
-  FROM employee
+  connection.query(`SELECT CONCAT(first_name," ", last_name) AS Name, title AS Title, salary AS Salary 
+  FROM employee 
   LEFT JOIN role on role_id = role.id`, function (err, employee) {
     if (err) throw err;
     console.table(employee);
@@ -94,7 +93,7 @@ function viewEmployees() {
 
 function viewRoles() {
   connection.query(`
-  SELECT title,salary, DEPT 
+  SELECT title AS Title,salary AS Salary, DEPT AS Department
   FROM role
   LEFT JOIN department ON department_id = department.id`, function (err, role) {
     if (err) throw err;
@@ -228,7 +227,10 @@ function addDept() {
 }
 
 // function updateEmployee() {
-//   connection.query("SELECT first_name,last_name FROM employee", function (err, employee) {
+//   connection.query(`
+//   SELECT CONCAT(first_name," ",last_name) AS Name,title AS Title,salary AS Salary
+//   FROM employee
+//   LEFT JOIN role on role_id = role.id`, function (err, employee) {
 //     if (err) throw err;
 //     console.table(employee);
 //     let empArr = [];
