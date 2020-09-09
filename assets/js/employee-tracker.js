@@ -36,7 +36,7 @@ function mainMenu() {
         "View All Employees",
         "View All Roles",
         "View All Departments",
-        // "Update An Employee Role",
+        "Update An Employee Role",
         "Exit"
       ]
     },
@@ -226,38 +226,53 @@ function addDept() {
   });
 }
 
-// function updateEmployee() {
-//   connection.query(`
-//   SELECT CONCAT(first_name," ",last_name) AS Name,title AS Title,salary AS Salary
-//   FROM employee
-//   LEFT JOIN role on role_id = role.id`, function (err, employee) {
-//     if (err) throw err;
-//     console.table(employee);
-//     let empArr = [];
-//     for (let i = 0; i < res.length; i++) {
-//       empArr.push(res[i].title)
-//     }
-//   }).then(function (){
-//   inquirer.prompt([
-//     {
-//       type: "list",
-//       message: "Which employee would you like to update?",
-//       name: "employee",
-//       choices: empArr
-//     }
-//   ]);
-// }).then(function (answers) {
-//     connection.query(
-//       "UPDATE employee SET ? WHERE ?",
-//       [
-//         {
-//           quantity: 100,
-//           flavor: "Rocky Road"
-//         }
-//       ],
-//       function (err, res) {
-//         if (err) throw err;
-//         mainMenu();
-//       });
-//   });
-// }
+function updateEmployee() {
+  connection.query(`
+  SELECT CONCAT(first_name," ",last_name) AS Name,title AS Title,salary AS Salary
+  FROM employee
+  LEFT JOIN role on role_id = role.id`, function (err, employee) {
+    if (err) throw err;
+    console.table(employee);
+    let updateArr = [];
+    for (let i = 0; i < employee.length; i++) {
+      updateArr.push(employee[i].Name)
+    }
+    inquirer.prompt([
+      {
+        type: "list",
+        message: "Which employee would you like to update?",
+        name: "employee",
+        choices: updateArr
+      },
+      {
+        type: "list",
+        message: "Who is their Manager?",
+        name: "manager",
+        choices: updateArr
+      }
+    ]).then(function (answers) {
+        let mgrID;
+        connection.query(`SELECT * FROM employee`, function (err, emp) {
+          if (err) throw err;
+          console.log(emp)
+          for (let i = 0; i < emp.length; i++) {
+            if (emp[i].first_name == answers.manager) {
+              mgrID = emp[i].id
+            }
+
+          }
+          connection.query(
+            "UPDATE employee SET ? WHERE ?",
+            [
+              {
+                manager_id: mgrID
+              }
+            ],
+            function (err, res) {
+              if (err) throw err;
+              mainMenu();
+            });
+        });
+      });
+    });
+}
