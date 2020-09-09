@@ -30,7 +30,7 @@ Leonard Love. Pull requests are welcome, but please open an issue first to discu
 ## <a name="test">Test</a>
 
 Please see a demo of the project below:
-![Demo]()
+![Demo](assets/images/employeeTracker.gif)
 
 ## <a name="questions">Questions</a>
 
